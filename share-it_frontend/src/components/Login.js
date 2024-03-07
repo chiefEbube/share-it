@@ -1,17 +1,19 @@
-import { GoogleLogin } from '@react-oauth/google';
-// import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from '@react-oauth/google'
+import { useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
+import { client } from '../client'
 
 import ShareVideo from '../assets/share.mp4'
 import logo from '../assets/logowhite.png'
 
 
 const Login = () => {
+  const navigate = useNavigate()
 
   const responseGoogle = (response) => {
     const userObj = jwtDecode(response.credential)
     localStorage.setItem('user', JSON.stringify(userObj))
-    const {name, sub, picture} = userObj
+    const { name, sub, picture } = userObj
 
     const doc = {
       _id: sub,
@@ -19,6 +21,11 @@ const Login = () => {
       userName: name,
       image: picture
     }
+
+    client.createIfNotExists(doc)
+      .then(() => {
+        navigate('/', { replace: true })
+      })
   }
 
   return (
