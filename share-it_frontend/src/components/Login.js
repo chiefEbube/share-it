@@ -50,7 +50,7 @@ const Login = () => {
             <GoogleLogin
               onSuccess={responseGoogle}
               onError={responseGoogle}
-            />;
+            />
           </div>
         </div>
       </div>
